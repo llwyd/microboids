@@ -23,6 +23,24 @@
     .word _sysTick      /* 0x3C SysTick timer */
 
     /* Rest of vectors would go here */
+    .word 0x0           /* 0 */
+    .word 0x0           /* 1 */
+    .word 0x0           /* 2 */
+    .word 0x0           /* 3 */
+    .word 0x0           /* 4 */
+    .word 0x0           /* 5 */
+    .word 0x0           /* 6 */
+    .word 0x0           /* 7 */
+    .word 0x0           /* 8 */
+    .word 0x0           /* 9 */
+    .word 0x0           /* 10 */
+    .word 0x0           /* 11 */
+    .word 0x0           /* 12 */
+    .word 0x0           /* 13 */
+    .word 0x0           /* 14 */
+    .word _tcc0         /* 15 */
+    .word _tcc1         /* 16 */
+    .word _tcc2         /* 17 */
 
 .text
 .weak _reset
@@ -54,6 +72,15 @@
 
 .weak _sysTick
 .thumb_set _sysTick, dead
+
+.weak _tcc0
+.thumb_set _tcc0, dead
+
+.weak _tcc1
+.thumb_set _tcc1, dead
+
+.weak _tcc2
+.thumb_set _tcc2, dead
 
 .thumb_func
 dead:

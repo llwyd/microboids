@@ -1,15 +1,12 @@
-/* Startup code which copies data to ram and clears bss */
     .text
     .syntax unified
     .cpu cortex-m0plus
     .thumb
 
+
 .globl _reset
 .thumb_func
 _reset:
-    /* Disable interrupts */
-    CPSID IF
-
     /* Copy Data values from ROM -> SRAM */
     ldr r0, = _etext 
 
@@ -22,14 +19,14 @@ _reset:
 copiedtoram:
     /* Clear BSS Region */
     ldr r1, = _sbss
+    movs r4, #4
+clearbss:
     ldr r2, = _ebss
-
+    
     cmp r1, r2
     beq bsscleared
     
-    movs r4, #4
     movs r0, #0x00
-clearbss:    
     /* Store 0x0 in location held in r1 */
     str r0, [r1]
     add r1, r4
@@ -38,6 +35,9 @@ clearbss:
     bne clearbss
 
 bsscleared:
+    /* Disable interrupts */
+    CPSID IF
+
     bl main
 
 /*  Function for copying from rom to ram:
