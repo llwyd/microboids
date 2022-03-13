@@ -22,6 +22,7 @@ SECTIONS
     {
         _sdata = .;
         *(.data*)
+        . = ALIGN(4);
         _edata = .;
     } > RAM AT > ROM
     
