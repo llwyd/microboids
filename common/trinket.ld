@@ -31,7 +31,9 @@ SECTIONS
     { 
         _sbss = .;
         *(.bss*)
+        . = ALIGN(4);
         *(COMMON)
+        . = ALIGN(4);
         _ebss = .;
     } > RAM AT > ROM  
 
