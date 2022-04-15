@@ -32,7 +32,7 @@
     .word 0x0           /* 6 */
     .word 0x0           /* 7 */
     .word 0x0           /* 8 */
-    .word 0x0           /* 9 */
+    .word _sercom0      /* 9 */
     .word 0x0           /* 10 */
     .word 0x0           /* 11 */
     .word 0x0           /* 12 */
@@ -81,6 +81,9 @@
 
 .weak _tcc2
 .thumb_set _tcc2, dead
+
+.weak _sercom0
+.thumb_set _sercom0, dead
 
 .thumb_func
 dead:
