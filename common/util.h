@@ -7,6 +7,9 @@ typedef enum {false, true} bool;
 #define CLR(X, Y, Z) ( (X) &= ~( (Y) << (Z) ) )
 #define TOG(X, Y, Z) ( (X) ^=  ( (Y) << (Z) ) )
 
+#define WAITSET( X, Y ) ( while( !( X & ( 1U << YU ) ) ) )
+#define WAITCLR( X, Y ) ( while(  ( X & ( 1U << YU ) ) ) )
+
 typedef struct
 {
     bool pin0:1;
