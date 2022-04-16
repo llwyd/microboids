@@ -58,7 +58,7 @@ typedef struct
     unsigned char PMUX0:8;
     unsigned char PMUX1:8;
     unsigned char PMUX2:8;
-    unsigne dcha PMUX:sion before while c8;
+    unsigned char PMUX3:8;
     unsigned char PMUX4:8;
     unsigned char PMUX5:8;
     unsigned char PMUX6:8;
