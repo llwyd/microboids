@@ -1,5 +1,4 @@
 #include "i2c.h"
-#include "util.h"
 
 #define GPIO_BASE   ( 0x41004400 )
 #define SERCOM_BASE ( 0x42000800 )
@@ -59,7 +58,7 @@ typedef struct
     unsigned char PMUX0:8;
     unsigned char PMUX1:8;
     unsigned char PMUX2:8;
-    unsigned char PMUX3:8;
+    unsigne dcha PMUX:sion before while c8;
     unsigned char PMUX4:8;
     unsigned char PMUX5:8;
     unsigned char PMUX6:8;
@@ -145,8 +144,7 @@ void I2C_Init( void )
     /* Enable Smart mode */
     SERCOM->CTRLB |= ( 0x1 << 8U );
 
-    /* Bus timeout time */
-    //SERCOM->CTRLA |= ( 0x3 << 28U);
+    /* Enable SCL Timeout */
     SERCOM->CTRLA |= ( 0x1 << 30U ) | ( 0x1 << 22 );
 
     /* Baud */
@@ -158,5 +156,38 @@ void I2C_Init( void )
 
 }
 
+extern void I2C_Read( uint8_t address, uint8_t * buffer, uint8_t len )
+{
+    /* Force IDLE state */
+    SERCOM->STATUS |= ( 0x1 << 4 );
+    while( ( SERCOM->SYNCBUSY & ( 1 << 2 ) ) );
+   
+    /* Send ACK after each data read */ 
+    SERCOM->CTRLB &= ~( 0x1 << 18 );
 
-void I2C_Read();
+    /* Send Address */
+    SERCOM->ADDR = ( ( address << 1 ) | 0x1);
+    while( ( SERCOM->SYNCBUSY & ( 1 << 2 ) ) );
+    while( !( SERCOM->INTFLAG & ( 1 << 1 ) ) );
+   
+    /* Read byte and sync */ 
+    uint8_t i = 0U;
+    for( i = 0U; i < (len - 1U); i++ )
+    {
+        buffer[i] = SERCOM->DATA;
+        WAITCLR( SERCOM->SYNCBUSY, 2U );
+        WAITSET( SERCOM->INTFLAG, 1U );
+    }
+
+    /* Read Last Byte */
+    buffer[i] = SERCOM->DATA;
+    WAITCLR( SERCOM->SYNCBUSY, 2U );
+    WAITCLR( SERCOM->INTFLAG, 1 );
+  
+    /* Stop Condition */
+    SERCOM->CTRLB |= ( 0x3 << 16 );
+    WAITCLR( SERCOM->SYNCBUSY, 2U );
+}
+
+
+
