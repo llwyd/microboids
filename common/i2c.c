@@ -153,18 +153,42 @@ void I2C_Init( void )
     /* Enable */
     SERCOM->CTRLA |= ( 0x1 << 1 );
     WAITCLR( SERCOM->SYNCBUSY, 1U);
+    
+    /* Force IDLE state */
+    SERCOM->STATUS |= ( 0x1 << 4 );
+    while( ( SERCOM->SYNCBUSY & ( 1 << 2 ) ) );
+    
+    /* Send ACK after each data read */ 
+    SERCOM->CTRLB &= ~( 0x1 << 18 );
+}
 
+extern void I2C_Write( uint8_t address, uint8_t * buffer, uint8_t len )
+{
+    /* Send Address */
+    SERCOM->ADDR = ( ( address << 1 ) );
+    WAITCLR( SERCOM->SYNCBUSY, 2U );
+    WAITSET( SERCOM->INTFLAG, 0U );
+
+    /* Write byte and sync */ 
+    uint8_t i = 0U;
+    for( i = 0U; i < (len - 1U); i++ )
+    {
+        SERCOM->DATA = buffer[i];
+        WAITCLR( SERCOM->SYNCBUSY, 2U );
+        WAITSET( SERCOM->INTFLAG, 0U );
+    }
+    
+    SERCOM->DATA = buffer[i];
+    WAITCLR( SERCOM->SYNCBUSY, 2U );
+    WAITSET( SERCOM->INTFLAG, 0U );
+    
+    /* Stop Condition */
+    SERCOM->CTRLB |= ( 0x3 << 16 );
+    WAITCLR( SERCOM->SYNCBUSY, 2U );
 }
 
 extern void I2C_Read( uint8_t address, uint8_t * buffer, uint8_t len )
 {
-    /* Force IDLE state */
-    SERCOM->STATUS |= ( 0x1 << 4 );
-    while( ( SERCOM->SYNCBUSY & ( 1 << 2 ) ) );
-   
-    /* Send ACK after each data read */ 
-    SERCOM->CTRLB &= ~( 0x1 << 18 );
-
     /* Send Address */
     SERCOM->ADDR = ( ( address << 1 ) | 0x1);
     while( ( SERCOM->SYNCBUSY & ( 1 << 2 ) ) );
