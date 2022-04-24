@@ -148,7 +148,7 @@ void I2C_Init( void )
     SERCOM->CTRLA |= ( 0x1 << 30U ) | ( 0x1 << 22 );
 
     /* Baud */
-    SERCOM->BAUD |= ( 0x4 << 0U );
+    SERCOM->BAUD |= ( 9U << 0U );
 
     /* Enable */
     SERCOM->CTRLA |= ( 0x1 << 1 );
