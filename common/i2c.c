@@ -34,15 +34,6 @@ typedef struct
 
 typedef struct
 {
-    unsigned char CTRL:8;
-    unsigned char STATUS:8;
-    unsigned short CLKCTRL:16;
-    unsigned int GENCTRL:32;
-    unsigned int GENDEV:32;
-} gclk_t;
-
-typedef struct
-{
     unsigned int DIRR:32;
     unsigned int DIRCLR:32;
     unsigned int DIRSET:32;
@@ -148,7 +139,9 @@ void I2C_Init( void )
     SERCOM->CTRLA |= ( 0x1 << 30U ) | ( 0x1 << 22 );
 
     /* Baud */
-    SERCOM->BAUD |= ( 9U << 0U );
+    SERCOM->BAUD |= ( 23U << 0U );
+
+    SERCOM->CTRLA |= ( 0x1 << 24 );
 
     /* Enable */
     SERCOM->CTRLA |= ( 0x1 << 1 );

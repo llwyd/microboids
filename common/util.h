@@ -71,5 +71,13 @@ typedef struct
     unsigned char byte3:8;
 } reg_byte_t;
 
+typedef struct
+{
+    unsigned char CTRL:8;
+    unsigned char STATUS:8;
+    unsigned short CLKCTRL:16;
+    unsigned int GENCTRL:32;
+    unsigned int GENDEV:32;
+} gclk_t;
 
 #endif /* __UTIL_H_ */
