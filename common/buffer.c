@@ -30,7 +30,7 @@ void Task_Add( void ( *fn)( void ) )
         asm("CPSID IF");
         task.write_index++;
         task.fill++;
-        task.write_index %= BUFFER_SIZE;
+        task.write_index = ( task.write_index & ( BUFFER_SIZE - 1U ) );
     
         /* Exit critical Section */
         asm("CPSIE IF");
@@ -49,7 +49,7 @@ void Task_Get( void )
         asm("CPSID IF");
         task.read_index++;
         task.fill--;
-        task.read_index %= BUFFER_SIZE;
+        task.read_index = ( task.read_index & ( BUFFER_SIZE - 1U ) );
     
         /* Exit critical Section */
         asm("CPSIE IF");
