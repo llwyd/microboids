@@ -38,8 +38,44 @@ volatile spi_t  * SERCOM    = ( spi_t * )  SERCOM1_BASE;
 volatile gpio_t * GPIO      = ( gpio_t * ) GPIO_BASE;
 volatile gclk_t * GCLK      = ( gclk_t * ) GCLK_BASE;
 
-extern void SPI_Init( void )
+static void ConfigurePins( void )
+{
+    /* Reset PA0/1 */
+    GPIO->DIRR |= ( 0x3 );
+    GPIO->OUTSET |= ( 0x3 );
+    
+    /* PA0 = MOSI, MUX D */
+    GPIO->PINCFG0 |= 0x1;
+    GPIO->PMUX0 |= 0x3
+
+    /* PA1 = SCK, MUX D */
+    GPIO->PINCFG1 |= 0x1;
+    GPIO->PMUX0 |= ( 0x3 << 4U );
+}
+
+static void ConfigurePeripheral( void )
 {
 
+}
+
+extern void SPI_Init( void )
+{
+    /* GCLK */
+    /* Set main clk as source for gclk1 */
+    unsigned int val = 0U;
+    val = ( 1 << 16 ) | ( 1 << 0x6 ) | ( 1 << 0 );
+    GCLK->GENCTRL |= val;
+    WAITCLR( GCLK->STATUS, 7U );
+
+    /* Set GCLK1 as clock for SERCOM1 */
+    unsigned short short_val = ( 1 << 14 ) | ( 1 << 8 ) | ( 0x15 << 0 );
+    GCLK->CLKCTRL |= short_val;
+    WAITCLR( GCLK->STATUS, 7U );
+
+    /* Enable SERCOM1 */
+    PM_APBC |= ( 0x1 << 3U );
+
+    ConfigurePins();
+    ConfigurePeripheral();
 }
 
