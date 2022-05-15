@@ -119,3 +119,17 @@ extern void SPI_Write( void )
     }
 }
 
+extern void SPI_WriteMSB( uint8_t * data, uint8_t len )
+{
+    uint8_t num_elements = len >> 2U;
+    for( int idx = 0; idx < num_elements; idx++ )
+    {
+        int actual_index = ( 4 * ( idx + 1 ) ) - 1U;
+        for( int jdx = 0; jdx < 4; jdx++ )
+        {
+            SERCOM->DATA = data[actual_index--];
+            WAITSET( SERCOM->INTFLAG, 0U);
+        } 
+    }
+}
+
