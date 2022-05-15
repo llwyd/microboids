@@ -77,8 +77,8 @@ static void ConfigurePeripheral( void )
 
     /* Data Order Bit, no change needed */
 
-    /* Baud rate, 100hz */
-    SERCOM->BAUD |= 0x4;
+    /* Baud rate, 1Mhz */
+    SERCOM->BAUD |= 0x3;
 
     /* Enable */
     SERCOM->CTRLA |= ( 0x1 << 1U );
