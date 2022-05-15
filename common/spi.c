@@ -46,7 +46,7 @@ static void ConfigurePins( void )
     
     /* PA0 = MOSI, MUX D */
     GPIO->PINCFG0 |= 0x1;
-    GPIO->PMUX0 |= 0x3
+    GPIO->PMUX0 |= 0x3;
 
     /* PA1 = SCK, MUX D */
     GPIO->PINCFG1 |= 0x1;
@@ -55,6 +55,33 @@ static void ConfigurePins( void )
 
 static void ConfigurePeripheral( void )
 {
+    /* SERCOM1 */
+
+    /* Host Mode */
+    SERCOM->CTRLA |= ( 0x3 << 2U );
+
+    /* High when idle */
+    SERCOM->CTRLA |= ( 0x1 << 29U );
+
+    /* Falling, change, Rising, Sample */
+    SERCOM->CTRLA |= ( 0x1 << 28U );
+
+    /* leave frame format as-is */
+
+    /* Data in pinout as PAD3, though this isn't used */
+    SERCOM->CTRLA |= ( 0x3 << 20U );
+
+    /* Data out as pad0, SCK as PAD 1, no change needed */
+
+    /* Character Size, 8bit, no change needed */
+
+    /* Data Order Bit, no change needed */
+
+    /* Baud rate, 100hz */
+    SERCOM->BAUD |= 0x4;
+
+    /* Enable */
+    SERCOM->CTRLA |= ( 0x1 << 1U );
 
 }
 
@@ -77,5 +104,18 @@ extern void SPI_Init( void )
 
     ConfigurePins();
     ConfigurePeripheral();
+}
+
+extern void SPI_Write( void )
+{
+    uint8_t data[12] = {    0x00, 0x00, 0x00, 0x00,
+                            0xe1, 0x00, 0xff, 0x00,
+                            0xff,0xff,0xff,0xff };
+
+    for( int idx = 0; idx < 12; idx++ )
+    {
+        SERCOM->DATA = data[idx];
+        WAITSET( SERCOM->INTFLAG, 0U);
+    }
 }
 
