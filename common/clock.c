@@ -38,3 +38,17 @@ void Clock_Set48MHz( void )
 
     WAITCLR( GCLKK->STATUS, 7 );
 }
+
+void Clock_ConfigureGCLK( uint8_t g_clock, uint8_t peripheral )
+{
+    /* Configure GCLK */
+    unsigned int val = 0U;
+    val = ( 1 << 16 ) | ( 1 << 0x6 ) | g_clock;
+    GCLKK->GENCTRL |= val;
+    WAITCLR( GCLKK->STATUS, 7U );
+
+    /* Set GCLK_x as clock for peripheral */
+    unsigned short short_val = ( 1 << 14 ) | ( g_clock << 8 ) | ( peripheral << 0 );
+    GCLKK->CLKCTRL |= short_val;
+    WAITCLR( GCLKK->STATUS, 7U );
+}

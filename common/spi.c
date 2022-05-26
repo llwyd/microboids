@@ -87,17 +87,7 @@ static void ConfigurePeripheral( void )
 
 extern void SPI_Init( void )
 {
-    /* GCLK */
-    /* Set main clk as source for gclk1 */
-    unsigned int val = 0U;
-    val = ( 1 << 16 ) | ( 1 << 0x6 ) | ( 1 << 0 );
-    GCLK->GENCTRL |= val;
-    WAITCLR( GCLK->STATUS, 7U );
-
-    /* Set GCLK1 as clock for SERCOM1 */
-    unsigned short short_val = ( 1 << 14 ) | ( 1 << 8 ) | ( 0x15 << 0 );
-    GCLK->CLKCTRL |= short_val;
-    WAITCLR( GCLK->STATUS, 7U );
+    Clock_ConfigureGCLK( 0x2, 0x15 );
 
     /* Enable SERCOM1 */
     PM_APBC |= ( 0x1 << 3U );

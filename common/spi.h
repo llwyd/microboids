@@ -2,6 +2,7 @@
 #define _SPI_H_
 
 #include "util.h"
+#include "clock.h"
 
 extern void SPI_Init( void );
 extern void SPI_Write( void );
