@@ -27,14 +27,14 @@
     .word 0x0           /* 1 */
     .word 0x0           /* 2 */
     .word 0x0           /* 3 */
-    .word 0x0           /* 4 */
+    .word _eic          /* 4 */
     .word 0x0           /* 5 */
     .word 0x0           /* 6 */
     .word 0x0           /* 7 */
     .word 0x0           /* 8 */
     .word _sercom0      /* 9 */
-    .word 0x0           /* 10 */
-    .word 0x0           /* 11 */
+    .word _sercom1      /* 10 */
+    .word _sercom2      /* 11 */
     .word 0x0           /* 12 */
     .word 0x0           /* 13 */
     .word 0x0           /* 14 */
@@ -84,6 +84,15 @@
 
 .weak _sercom0
 .thumb_set _sercom0, dead
+
+.weak _sercom1
+.thumb_set _sercom1, dead
+
+.weak _sercom2
+.thumb_set _sercom2, dead
+
+.weak _eic
+.thumb_set _eic, dead
 
 .thumb_func
 dead:
