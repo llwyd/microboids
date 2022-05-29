@@ -19,6 +19,17 @@ void Task_Init( void )
     task.fill = 0U;
 }
 
+void Task_Flush( void )
+{
+    if( task.fill > 0U )
+    {
+        asm("CPSID IF");
+        task.read_index = task.write_index;
+        task.fill = 0U;
+        asm("CPSIE IF");
+    }
+}
+
 void Task_Add( void ( *fn)( void ) )
 { 
    
