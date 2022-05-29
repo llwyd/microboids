@@ -1,6 +1,7 @@
 
 #include "gpio.h"
 #include "i2c.h"
+#include "clock.h"
 
 #define GPIO_BASE   ( 0x41004400 )
 #define SERCOM_BASE ( 0x42000800 )
@@ -40,17 +41,7 @@ volatile gclk_t * GCLK      = ( gclk_t * ) GCLK_BASE;
 
 void I2C_Init( void )
 {
-    /* GCLK */
-    /* Set main clk as source for gclk1 */
-    unsigned int val = 0U;
-    val = ( 1 << 16 ) | ( 1 << 0x6 ) | ( 1 << 0 );
-    GCLK->GENCTRL |= val;
-    WAITCLR( GCLK->STATUS, 7U );
-
-    /* Set GCLK1 as clock for SERCOM0 */
-    unsigned short short_val = ( 1 << 14 ) | ( 1 << 8 ) | ( 0x14 << 0 );
-    GCLK->CLKCTRL |= short_val;
-    WAITCLR( GCLK->STATUS, 7U );
+    Clock_ConfigureGCLK( 0x7, 0x1, 0x14 );
 
     PM_APBC |= ( 0x1 << 2U );
 
