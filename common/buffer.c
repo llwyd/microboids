@@ -23,11 +23,10 @@ void Task_Add( void ( *fn)( void ) )
 { 
    
     if( task.fill < BUFFER_SIZE )
-    {
-        task.fn[task.write_index] = fn;
-        
+    { 
         /* Enter critical Section */
         asm("CPSID IF");
+        task.fn[task.write_index] = fn;
         task.write_index++;
         task.fill++;
         task.write_index = ( task.write_index & ( BUFFER_SIZE - 1U ) );
@@ -40,19 +39,20 @@ void Task_Add( void ( *fn)( void ) )
 
 void Task_Get( void )
 { 
-   
+  void ( *func )( void ); 
     if( task.fill > 0 )
     {
-        task.fn[task.read_index]();
-
         /* Enter critical Section */
         asm("CPSID IF");
+        func = task.fn[task.read_index];
         task.read_index++;
         task.fill--;
         task.read_index = ( task.read_index & ( BUFFER_SIZE - 1U ) );
     
         /* Exit critical Section */
         asm("CPSIE IF");
+
+        func();
     } 
  
 }
