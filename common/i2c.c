@@ -1,3 +1,5 @@
+
+#include "gpio.h"
 #include "i2c.h"
 
 #define GPIO_BASE   ( 0x41004400 )
