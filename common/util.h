@@ -77,7 +77,7 @@ typedef struct
     unsigned char STATUS:8;
     unsigned short CLKCTRL:16;
     unsigned int GENCTRL:32;
-    unsigned int GENDEV:32;
+    unsigned int GENDIV:32;
 } gclk_t;
 
 

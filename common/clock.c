@@ -52,3 +52,12 @@ void Clock_ConfigureGCLK( uint8_t g_clock, uint8_t peripheral )
     GCLKK->CLKCTRL |= short_val;
     WAITCLR( GCLKK->STATUS, 7U );
 }
+
+void Clock_Divide( uint8_t g_clock, uint8_t div )
+{
+    unsigned int val = 0U;
+    val = ( div << 8U ) | g_clock;
+    GCLKK->GENDIV |= val;
+    WAITCLR( GCLKK->STATUS, 7U );
+}
+
