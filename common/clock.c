@@ -10,6 +10,16 @@
 #define DFL_VAL         ( *( ( volatile unsigned int *)0x40000828 ) )
 
 #define GCLK_BASE   ( 0x40000C00 )
+
+typedef struct
+{
+    unsigned char CTRL:8;
+    unsigned char STATUS:8;
+    unsigned short CLKCTRL:16;
+    unsigned int GENCTRL:32;
+    unsigned int GENDIV:32;
+} gclk_t;
+
 volatile gclk_t * GCLKK      = ( gclk_t * ) GCLK_BASE;
 
 void Clock_Set8MHz( void )

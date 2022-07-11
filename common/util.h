@@ -53,16 +53,6 @@ typedef struct
 
 typedef struct
 {
-    unsigned char CTRL:8;
-    unsigned char STATUS:8;
-    unsigned short CLKCTRL:16;
-    unsigned int GENCTRL:32;
-    unsigned int GENDIV:32;
-} gclk_t;
-
-
-typedef struct
-{
     uint32_t CTRL:32;
     uint32_t LOAD:32;
     uint32_t VAL:32;

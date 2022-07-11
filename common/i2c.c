@@ -37,7 +37,6 @@ typedef struct
 
 volatile i2c_t  * SERCOM    = ( i2c_t * ) SERCOM_BASE; 
 volatile gpio_t * GPIO      = ( gpio_t * ) GPIO_BASE;
-volatile gclk_t * GCLK      = ( gclk_t * ) GCLK_BASE;
 
 void I2C_Init( void )
 {
