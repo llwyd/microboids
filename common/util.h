@@ -53,26 +53,6 @@ typedef struct
 
 typedef struct
 {
-    unsigned char nib0:4;
-    unsigned char nib1:4;
-    unsigned char nib2:4;
-    unsigned char nib3:4;
-    unsigned char nib4:4;
-    unsigned char nib5:4;
-    unsigned char nib6:4;
-    unsigned char nib7:4;
-} reg_nib_t;
-
-typedef struct
-{
-    unsigned char byte0:8;
-    unsigned char byte1:8;
-    unsigned char byte2:8;
-    unsigned char byte3:8;
-} reg_byte_t;
-
-typedef struct
-{
     unsigned char CTRL:8;
     unsigned char STATUS:8;
     unsigned short CLKCTRL:16;
@@ -80,5 +60,15 @@ typedef struct
     unsigned int GENDIV:32;
 } gclk_t;
 
+
+typedef struct
+{
+    uint32_t CTRL:32;
+    uint32_t LOAD:32;
+    uint32_t VAL:32;
+    uint32_t CALIB:32;
+} systick_t;
+
+#define SYSTICK_BASE ( 0xE000E010 )
 
 #endif /* __UTIL_H_ */
