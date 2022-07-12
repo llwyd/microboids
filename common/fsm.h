@@ -8,12 +8,13 @@
 #ifndef _FSM_H_
 #define _FSM_H_
 
-#include "util.h"
+#include <stdint.h>
+#include <stdbool.h>
 
 #define BUFFER_SIZE ( 32U )
 
 /* Signal to send events to a given state */
-typedef int signal;
+typedef int32_t signal;
 
 /* Default signals for state machine */
 enum DefaultSignals
@@ -28,9 +29,9 @@ enum DefaultSignals
 /* Circular buffer for FSM events */
 typedef struct
 {
-    unsigned char read_index;
-    unsigned char write_index;
-    unsigned char fill;
+    uint8_t read_index;
+    uint8_t write_index;
+    uint8_t fill;
     signal event[ BUFFER_SIZE ];
 } fsm_events_t;
 

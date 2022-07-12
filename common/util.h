@@ -1,13 +1,6 @@
 #ifndef __UTIL_H_
 #define __UTIL_H_
 
-typedef enum {false, true} bool;
-
-typedef unsigned int uint32_t;
-typedef unsigned short uint16_t;
-typedef unsigned char uint8_t;
-
-
 #define SET(X, Y, Z) ( (X) |=  ( (Y) << (Z) ) )
 #define CLR(X, Y, Z) ( (X) &= ~( (Y) << (Z) ) )
 #define TOG(X, Y, Z) ( (X) ^=  ( (Y) << (Z) ) )
