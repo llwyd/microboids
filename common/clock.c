@@ -20,6 +20,8 @@ typedef struct
     uint32_t GENDIV:32;
 } gclk_t;
 
+_Static_assert( sizeof( gclk_t ) == 12U , "GCLK struct size incorrect" );
+
 volatile gclk_t * GCLKK      = ( gclk_t * ) GCLK_BASE;
 
 void Clock_Set8MHz( void )
