@@ -55,6 +55,8 @@ typedef struct
     uint32_t CALIB:32;
 } systick_t;
 
+_Static_assert( sizeof( systick_t ) == 16, "Systick struct size incorrect" );
+
 #define SYSTICK_BASE ( 0xE000E010 )
 
 #endif /* __UTIL_H_ */
