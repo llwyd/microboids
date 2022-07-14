@@ -6,33 +6,33 @@
 #define GPIO_BASE   ( 0x41004400 )
 #define SERCOM_BASE ( 0x42000800 )
 #define GCLK_BASE   ( 0x40000C00 )
-#define PM_APBC     ( *( ( volatile unsigned int *)0x40000420 ) )
+#define PM_APBC     ( *( ( volatile uint32_t *)0x40000420 ) )
 
 typedef struct
 {
-    unsigned int CTRLA:32;
-    unsigned int CTRLB:32;
-    unsigned int RESERVED_0:32;
-    unsigned int BAUD:32;
-    unsigned int RESERVED_1:32;
-    unsigned char INTENCLR:8;
-    unsigned char RESERVED_2:8;
-    unsigned char INTENSET:8;
-    unsigned char RESERVED_3:8;
-    unsigned char INTFLAG:8;
-    unsigned char RESERVED_4:8;
-    unsigned short STATUS:16;
-    unsigned int SYNCBUSY:32;
-    unsigned int RESERVED_5:32;
-    unsigned int ADDR:32;
-    unsigned short DATA:16;
-    unsigned char RESERVED_6:8;
-    unsigned char RESERVED_7:8;
-    unsigned char RESERVED_8:8;
-    unsigned char RESERVED_9:8;
-    unsigned char RESERVED_10:8;
-    unsigned char RESERVED_11:8;
-    unsigned char DBGCTRL:8;
+    uint32_t CTRLA:32;
+    uint32_t CTRLB:32;
+    uint32_t RESERVED_0:32;
+    uint32_t BAUD:32;
+    uint32_t RESERVED_1:32;
+    uint8_t INTENCLR:8;
+    uint8_t RESERVED_2:8;
+    uint8_t INTENSET:8;
+    uint8_t RESERVED_3:8;
+    uint8_t INTFLAG:8;
+    uint8_t RESERVED_4:8;
+    uint16_t STATUS:16;
+    uint32_t SYNCBUSY:32;
+    uint32_t RESERVED_5:32;
+    uint32_t ADDR:32;
+    uint16_t DATA:16;
+    uint8_t RESERVED_6:8;
+    uint8_t RESERVED_7:8;
+    uint8_t RESERVED_8:8;
+    uint8_t RESERVED_9:8;
+    uint8_t RESERVED_10:8;
+    uint8_t RESERVED_11:8;
+    uint8_t DBGCTRL:8;
 } i2c_t;
 
 volatile i2c_t  * SERCOM    = ( i2c_t * ) SERCOM_BASE; 
