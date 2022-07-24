@@ -41,14 +41,14 @@ void Display_Init( void )
 
 void Display_Update( const uint8_t frame [ DISPLAY_PAGES ] [ DISPLAY_COLUMNS ] )
 {
-    uint8_t data[2] = { 0x40, 0x00};
-
+    I2C_Start( 0x3C );
+    I2C_WriteByte( 0x40 );
     for( uint8_t i = 0; i < DISPLAY_PAGES; i++ )
     {
         for( uint8_t j = 0; j < DISPLAY_COLUMNS; j++ )
         {
-            data[1] = frame[i][j];
-            I2C_Write( 0x3C, data, 2U );
+            I2C_WriteByte( frame[i][j] );
         }
     }
+    I2C_Stop();
 }

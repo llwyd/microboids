@@ -84,6 +84,28 @@ void I2C_Init( void )
     SERCOM->CTRLB &= ~( 0x1 << 18 );
 }
 
+void I2C_Start( const uint8_t address )
+{
+    /* Send Address */
+    SERCOM->ADDR = ( ( address << 1 ) );
+    WAITCLR( SERCOM->SYNCBUSY, 2U );
+    WAITSET( SERCOM->INTFLAG, 0U );
+}
+
+void I2C_WriteByte( const uint8_t byte )
+{
+    SERCOM->DATA = byte;
+    WAITCLR( SERCOM->SYNCBUSY, 2U );
+    WAITSET( SERCOM->INTFLAG, 0U );
+}
+
+void I2C_Stop( void )
+{
+    /* Stop Condition */
+    SERCOM->CTRLB |= ( 0x3 << 16 );
+    WAITCLR( SERCOM->SYNCBUSY, 2U );
+}
+
 extern bool I2C_Write( uint8_t address, uint8_t * buffer, uint8_t len )
 {
     bool ret = false;
