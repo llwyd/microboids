@@ -41,6 +41,12 @@
     .word _tcc0         /* 15 */
     .word _tcc1         /* 16 */
     .word _tcc2         /* 17 */
+    .word 0x0           /* 18 */
+    .word 0x0           /* 19 */
+    .word 0x0           /* 20 */
+    .word 0x0           /* 21 */
+    .word 0x0           /* 22 */
+    .word _adc          /* 23 */
 
 .text
 .weak _reset
@@ -93,6 +99,9 @@
 
 .weak _eic
 .thumb_set _eic, dead
+
+.weak _adc
+.thumb_set _adc, dead
 
 .thumb_func
 dead:
