@@ -38,5 +38,6 @@ void Timer_ClearInterrupt( void )
 
 void Timer_UpdatePeriod( uint8_t shift )
 {
-    TCC0->CC0 = ( TCC0_DEFAULT_COUNT >> shift );
+    TCC0->CC0 = ( ( TCC0_DEFAULT_COUNT ) >> shift );
+    TCC0->CTRLBSET = ( 0x1 << 5U );
 }

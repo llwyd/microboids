@@ -57,15 +57,13 @@ extern void ADC_ClearInterrupt( void )
 
 extern void ADC_UpdateWindow( uint8_t upper, uint8_t lower )
 {
-    /* Disable Interrupt */
-    CLR( ADC->INTENSET, 0x1, 0x2 );
-
     ADC->WINLT = lower;
     ADC->WINUT = upper;
 
     if( upper == 0xFF )
     {
-        /* result < WINLT */
+        /* result < WINUT */
+        ADC->WINUT = lower;
         ADC->WINCTRL = 0x2U;
     }
     else if( lower == 0x00 )
@@ -87,7 +85,7 @@ extern void ADC_UpdateWindow( uint8_t upper, uint8_t lower )
 
 extern void ADC_Init( void )
 {
-    Clock_ConfigureGCLK( 0x7, 0x4, 0x1E );
+    Clock_ConfigureGCLK( 0x6, 0x4, 0x1E );
     PM_APBC |= ( 0x1 << 16U );
 
     /* PA06 ADC Input, Mux B */
@@ -106,6 +104,12 @@ extern void ADC_Init( void )
 
     /* Enable */
     ADC->CTRLA |= ( 0x1 << 1 );
+}
+
+extern void ADC_DisableInterrupt( void )
+{
+    /* Disable Interrupt */
+    SET( ADC->INTENCLR, 0x1, 0x2 );
 }
 
 extern void ADC_Start( void )
