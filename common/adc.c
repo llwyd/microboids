@@ -45,6 +45,46 @@ adc_t;
 static volatile adc_t * ADC    = ( adc_t * ) ADC_BASE;
 static volatile gpio_t * GPIO  = ( gpio_t * ) GPIO_BASE;
 
+extern uint8_t ADC_Read( void )
+{
+    return ADC->RESULT;
+}
+
+extern void ADC_ClearInterrupt( void )
+{
+    ADC->INTFLAG |= ( 0x1 << 2U );
+}
+
+extern void ADC_UpdateWindow( uint8_t upper, uint8_t lower )
+{
+    /* Disable Interrupt */
+    CLR( ADC->INTENSET, 0x1, 0x2 );
+
+    ADC->WINLT = lower;
+    ADC->WINUT = upper;
+
+    if( upper == 0xFF )
+    {
+        /* result < WINLT */
+        ADC->WINCTRL = 0x2U;
+    }
+    else if( lower == 0x00 )
+    {
+        /* result > WINLT */
+        ADC->WINLT = upper;
+        ADC->WINCTRL = 0x1U;
+    }
+    else
+    {
+        /* !(WINLT < result < WINUT) */
+        ADC->WINCTRL = 0x4U;
+    }
+
+    /* Flush and Re-enable */
+    SET( ADC->SWTRIG,   0x1, 0x0 );
+    SET( ADC->INTENSET, 0x1, 0x2 );
+}
+
 extern void ADC_Init( void )
 {
     Clock_ConfigureGCLK( 0x7, 0x4, 0x1E );
@@ -65,14 +105,14 @@ extern void ADC_Init( void )
     ADC->INPUTCTRL |= ( 0x18 << 8 ) | ( 0x6 << 0 ) | ( 0xF << 24 );
 
     /* Enable */
-    ADC-> CTRLA |= ( 0x1 << 1 );
+    ADC->CTRLA |= ( 0x1 << 1 );
 }
 
 extern void ADC_Start( void )
 {
     /* Start conversion */
     ADC->SWTRIG |= ( 0x1 << 1 );
+    WAITSET( ADC->INTFLAG, 0x0 );    
 }
-
 
 
