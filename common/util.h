@@ -55,8 +55,26 @@ typedef struct
     uint32_t CALIB:32;
 } systick_t;
 
+typedef struct
+{
+    uint32_t IPRO0:32;
+    uint32_t IPRO1:32;
+    uint32_t IPRO2:32;
+    uint32_t IPRO3:32;
+    uint32_t IPRO4:32;
+    uint32_t IPRO5:32;
+    uint32_t IPRO6:32;
+    uint32_t IPRO7:32;
+} nvic_ipro_t;
+
 _Static_assert( sizeof( systick_t ) == 16, "Systick struct size incorrect" );
 
 #define SYSTICK_BASE ( 0xE000E010 )
+
+#define NVIC_ISER ( 0xE000E100 )
+#define NVIC_ICER ( 0xE000E180 )
+#define NVIC_ISPR ( 0xE000E200 )
+#define NVIC_ICPR ( 0xE000E280 )
+#define NVIC_IPRO ( 0xE000E400 )
 
 #endif /* __UTIL_H_ */

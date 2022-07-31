@@ -57,6 +57,7 @@ extern void ADC_ClearInterrupt( void )
 
 extern void ADC_UpdateWindow( uint8_t upper, uint8_t lower )
 {
+    ADC_DisableInterrupt();
     ADC->WINLT = lower;
     ADC->WINUT = upper;
 
