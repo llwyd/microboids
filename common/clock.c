@@ -2,6 +2,52 @@
 #include "util.h"
 #include "clock.h"
 
+#ifdef TARGET_STM32
+
+typedef struct
+{
+    uint32_t CR:32;
+    uint32_t ICSCR:32;
+    uint32_t CFGR:32;
+    uint32_t PLLCFGR:32;
+    uint32_t CRRCR:32;
+    uint32_t CIER:32;
+    uint32_t CIFR:32;
+    uint32_t CICR:32;
+    uint32_t IOPRSTR:32;
+    uint32_t AHBRSTR:32;
+    uint32_t APBRSTR1:32;
+    uint32_t APBRSTR2:32;
+    uint32_t IOPENR:32;
+    uint32_t AHBENR:32;
+    uint32_t APBENR1:32;
+    uint32_t APBENR2:32;
+    uint32_t IOPSMENR:32;
+    uint32_t AHBSMENR:32;
+    uint32_t APBSMENR1:32;
+    uint32_t APBSMENR2:32;
+    uint32_t CCIPR:32;
+    uint32_t CCIPR2:32;
+    uint32_t BDCR:32;
+    uint32_t CSR:32;
+} rcc_t;
+
+#define RCC_BASE   ( 0x40021000 )
+static volatile rcc_t * RCC = ( rcc_t * ) RCC_BASE;
+
+void Clock_Set64MHz( void )
+{
+    /* Enable PLL */
+    RCC->CR |= ( 0x1 << 24U );
+    WAITSET( RCC->CR, 25U );
+
+    /* Set as system clock */
+    RCC->CFGR |= ( 0x2 << 0 );
+    WAITSET( RCC->CFGR, 4 );
+}
+
+
+#elif TARGET_SAMD21
 /* NVM */
 #define NVM_CTRL       ( *( ( volatile uint32_t *)0x41004004 ) )
 #define NVM_CALIB       ( *( ( volatile uint32_t *)0x00806024 ) )
@@ -72,4 +118,8 @@ void Clock_Divide( uint8_t g_clock, uint8_t div )
     GCLKK->GENDIV |= val;
     WAITCLR( GCLKK->STATUS, 7U );
 }
+
+#else
+_Static_assert(false, "No target defined in clock.h");
+#endif
 
