@@ -3,6 +3,36 @@
 
 #include <stdint.h>
 
+
+
+
+#ifdef TARGET_STM32
+
+#define GPIOA_BASE   ( 0x50000000 )
+#define GPIOB_BASE   ( 0x50000400 )
+#define GPIOC_BASE   ( 0x50000800 )
+#define GPIOD_BASE   ( 0x50000C00 )
+#define GPIOE_BASE   ( 0x50001000 )
+#define GPIOF_BASE   ( 0x50001400 )
+
+typedef struct
+{
+    uint32_t MODER:32;
+    uint32_t OTYPER:32;
+    uint32_t OSPEEDR:32;
+    uint32_t PUPDR:32;
+    uint32_t IDR:32;
+    uint32_t ODR:32;
+    uint32_t BSRR:32;
+    uint32_t LCKR:32;
+    uint32_t AFRL:32;
+    uint32_t AFRH:32;
+    uint32_t BRR:32;
+} gpio_t;
+
+
+#elif TARGET_SAMD21
+
 #define GPIO_BASE   ( 0x41004400 )
 #define EIC_BASE    ( 0x40001800 )
 
@@ -85,5 +115,12 @@ typedef struct
     uint8_t PINCFG30:8;
     uint8_t PINCFG31:8;
 } gpio_t;
+
+#else
+
+_Static_assert(false, "No target defined in gpio.h");
+
+#endif
+
 
 #endif /* _GPIO_H_ */
