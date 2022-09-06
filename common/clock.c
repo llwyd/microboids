@@ -10,6 +10,7 @@ typedef struct
     uint32_t ICSCR:32;
     uint32_t CFGR:32;
     uint32_t PLLCFGR:32;
+    uint32_t _RESERVED;
     uint32_t CRRCR:32;
     uint32_t CIER:32;
     uint32_t CIFR:32;
@@ -37,10 +38,12 @@ static volatile rcc_t * RCC = ( rcc_t * ) RCC_BASE;
 
 void Clock_Set64MHz( void )
 {
+    /* Increase wait states */
+    *((uint32_t *)0x40022000) |= ( 0x2 );
+    
     /* R = 2, N = 8, M = 1 */
     RCC->CR &= ~( 0x1 << 24U );
-    WAITCLR( RCC->CR, 25U );
-    
+    WAITCLR( RCC->CR, 25U );    
 
     RCC->PLLCFGR |= ( 0x1 << 29 ) | ( 0x1 << 25 ) | ( 0x1 << 17 ) | ( 0x8 << 8 ) | ( 0x1 << 4 ) | 0x2;
     
