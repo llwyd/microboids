@@ -37,13 +37,23 @@ static volatile rcc_t * RCC = ( rcc_t * ) RCC_BASE;
 
 void Clock_Set64MHz( void )
 {
+    /* R = 2, N = 8, M = 1 */
+    RCC->CR &= ~( 0x1 << 24U );
+    WAITCLR( RCC->CR, 25U );
+    
+
+    RCC->PLLCFGR |= ( 0x1 << 29 ) | ( 0x1 << 25 ) | ( 0x1 << 17 ) | ( 0x8 << 8 ) | ( 0x1 << 4 ) | 0x2;
+    
     /* Enable PLL */
     RCC->CR |= ( 0x1 << 24U );
     WAITSET( RCC->CR, 25U );
 
+    /* Enable output R */
+    RCC->PLLCFGR |= ( 0x1 << 28U );
+
     /* Set as system clock */
     RCC->CFGR |= ( 0x2 << 0 );
-    WAITSET( RCC->CFGR, 4 );
+    while ( ( ( RCC->CFGR >> 3U ) & 0x2 ) != 0x2 );
 }
 
 
