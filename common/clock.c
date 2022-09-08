@@ -45,7 +45,7 @@ void Clock_Set64MHz( void )
     RCC->CR &= ~( 0x1 << 24U );
     WAITCLR( RCC->CR, 25U );    
 
-    RCC->PLLCFGR |= ( 0x1 << 29 ) | ( 0x1 << 25 ) | ( 0x1 << 17 ) | ( 0x8 << 8 ) | ( 0x1 << 4 ) | 0x2;
+    RCC->PLLCFGR = ( 0x1 << 29 ) | ( 0x1 << 25 ) | ( 0x1 << 17 ) | ( 0x8 << 8 ) /* |  ( 0x1 << 4 )*/ | 0x2;
     
     /* Enable PLL */
     RCC->CR |= ( 0x1 << 24U );
