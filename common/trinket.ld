@@ -10,7 +10,8 @@ SECTIONS
     . = ORIGIN(ROM);
     .text :
     {
-        KEEP(*(.isr_vectors))
+        KEEP(*(.core_vectors))
+        KEEP(*(.samd21_vectors))
         *(.text*)
         *(.rodata*)
         . = ALIGN(4);
