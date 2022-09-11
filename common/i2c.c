@@ -3,6 +3,35 @@
 #include "i2c.h"
 #include "clock.h"
 
+#ifdef TARGET_STM32
+
+#define I2C2_BASE ( 0x40005800 )
+
+typedef struct
+{
+    uint32_t CR1:32;
+    uint32_t CR2:32;
+    uint32_t OAR1:32;
+    uint32_t OAR2:32;
+    uint32_t TIMINGR:32;
+    uint32_t TIMEOUTR:32;
+    uint32_t ISR:32;
+    uint32_t ICR:32;
+    uint32_t PECR:32;
+    uint32_t RXDR:32; 
+    uint32_t TXDR:32;
+} i2c_t;
+
+static volatile i2c_t  * I2C    = ( i2c_t * )  I2C2_BASE; 
+static volatile gpio_t * GPIO   = ( gpio_t * ) GPIOA_BASE;
+
+void I2C_Init( void )
+{
+
+}
+
+#elif TARGET_SAMD21
+
 #define GPIO_BASE   ( 0x41004400 )
 #define SERCOM_BASE ( 0x42000800 )
 #define GCLK_BASE   ( 0x40000C00 )
@@ -165,5 +194,5 @@ extern void I2C_Read( uint8_t address, uint8_t * buffer, uint8_t len )
     WAITCLR( SERCOM->SYNCBUSY, 2U );
 }
 
-
+#endif
 
