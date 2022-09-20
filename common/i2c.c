@@ -27,6 +27,61 @@ static volatile gpio_t * GPIO   = ( gpio_t * ) GPIOA_BASE;
 
 void I2C_Init( void )
 {
+    /* Lazy way of enabling gpio a */
+    *((uint32_t *)0x40021034) |= ( 0x1 << 0 );
+
+    /* Disable I2C2 */
+    I2C->CR1 &= ~0x1;
+
+    /* PA11, PA12, Alt Func 6 (AF6 ) */
+
+    /* Set Alt func */
+    GPIO->MODER &= ~( 1 << 22 );
+    GPIO->MODER &= ~( 1 << 24 );
+
+    /* Set Open Drain */
+    GPIO->OTYPER |= ( 1 << 11 );
+    GPIO->OTYPER |= ( 1 << 12 );
+
+    /* Speedy */
+    GPIO->OSPEEDR |= ( 0x3 << 22 );
+    GPIO->OSPEEDR |= ( 0x3 << 24 );
+
+    /* Alt Func 6 */
+    GPIO->AFRH |= ( 0x6 << 12 );
+    GPIO->AFRH |= ( 0x6 << 16 );
+    
+    /* Enable I2C2 Clock */
+    *((uint32_t *)0x4002103C) |= ( 0x1 << 22 );
+
+    /* Rise time / Fall Time  */
+
+    /* Turn on peripheral */
+    I2C->CR1 |= 0x1;
+}
+
+void I2C_Read( uint8_t address, uint8_t * buffer, uint8_t len )
+{
+
+}
+
+bool I2C_Write( uint8_t address, uint8_t * buffer, uint8_t len )
+{
+    return true;
+}
+
+void I2C_Start( const uint8_t address )
+{
+
+}
+
+void I2C_WriteByte( const uint8_t byte )
+{
+
+}
+
+void I2C_Stop( void )
+{
 
 }
 
