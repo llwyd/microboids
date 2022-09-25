@@ -9,50 +9,37 @@
     .word 0x0           /* 1 */
     .word 0x0           /* 2 */
     .word 0x0           /* 3 */
-    .word _eic          /* 4 */
+    .word 0x0           /* 4 */
     .word 0x0           /* 5 */
     .word 0x0           /* 6 */
     .word 0x0           /* 7 */
     .word 0x0           /* 8 */
-    .word _sercom0      /* 9 */
-    .word _sercom1      /* 10 */
-    .word _sercom2      /* 11 */
+    .word 0x0           /* 9 */
+    .word 0x0           /* 10 */
+    .word 0x0           /* 11 */
     .word 0x0           /* 12 */
     .word 0x0           /* 13 */
     .word 0x0           /* 14 */
-    .word _tcc0         /* 15 */
-    .word _tcc1         /* 16 */
-    .word _tcc2         /* 17 */
-    .word 0x0           /* 18 */
+    .word 0x0           /* 15 */
+    .word 0x0           /* 16 */
+    .word 0x0           /* 17 */
+    .word _tim7         /* 18 */
     .word 0x0           /* 19 */
     .word 0x0           /* 20 */
     .word 0x0           /* 21 */
     .word 0x0           /* 22 */
-    .word _adc          /* 23 */
+    .word 0x0           /* 23 */
+    .word 0x0           /* 24 */
+    .word 0x0           /* 25 */
+    .word 0x0           /* 26 */
+    .word 0x0           /* 27 */
+    .word 0x0           /* 28 */
+    .word 0x0           /* 29 */
+    .word 0x0           /* 30 */
+    .word 0x0           /* 31 */
 
-.weak _tcc0
-.thumb_set _tcc0, _unhandled_isr
-
-.weak _tcc1
-.thumb_set _tcc1, _unhandled_isr
-
-.weak _tcc2
-.thumb_set _tcc2, _unhandled_isr
-
-.weak _sercom0
-.thumb_set _sercom0, _unhandled_isr
-
-.weak _sercom1
-.thumb_set _sercom1, _unhandled_isr
-
-.weak _sercom2
-.thumb_set _sercom2, _unhandled_isr
-
-.weak _eic
-.thumb_set _eic, _unhandled_isr
-
-.weak _adc
-.thumb_set _adc, _unhandled_isr
+.weak _tim7
+.thumb_set _tim7, _unhandled_isr
 
 .thumb_func
 _unhandled_isr:

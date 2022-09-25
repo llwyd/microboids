@@ -3,7 +3,27 @@
 
 #ifdef TARGET_STM32
 
+void Timer_Init( void )
+{
 
+}
+
+void Timer_Start( void )
+{
+
+}
+
+void Timer_ClearInterrupt( void )
+{
+
+}
+
+/*
+void Timer_UpdatePeriod( void )
+{
+
+}
+*/
 #elif TARGET_SAMD21
 
 #define PM_APBC     ( *( ( volatile unsigned int *)0x40000420 ) )
