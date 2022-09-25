@@ -3,8 +3,12 @@
 
 #ifdef TARGET_STM32
 
+static volatile timer_t * TIM2 = ( timer_t * ) TIM2_BASE;
+
 void Timer_Init( void )
 {
+    /* Enable TIM2 */
+    *((uint32_t *)0x4002103C) |= ( 0x1 << 0U );
 
 }
 

@@ -20,10 +20,10 @@
     .word 0x0           /* 12 */
     .word 0x0           /* 13 */
     .word 0x0           /* 14 */
-    .word 0x0           /* 15 */
+    .word _tim2         /* 15 */
     .word 0x0           /* 16 */
     .word 0x0           /* 17 */
-    .word _tim7         /* 18 */
+    .word 0x0           /* 18 */
     .word 0x0           /* 19 */
     .word 0x0           /* 20 */
     .word 0x0           /* 21 */
@@ -38,8 +38,8 @@
     .word 0x0           /* 30 */
     .word 0x0           /* 31 */
 
-.weak _tim7
-.thumb_set _tim7, _unhandled_isr
+.weak _tim2
+.thumb_set _tim2, _unhandled_isr
 
 .thumb_func
 _unhandled_isr:
