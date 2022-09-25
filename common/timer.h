@@ -3,9 +3,9 @@
 
 #include "util.h"
 
-void Timer_Init( void );
-void Timer_Start( void );
-void Timer_ClearInterrupt( void );
+extern void Timer_Init( void );
+extern void Timer_Start( void );
+extern void Timer_ClearInterrupt( void );
 
 #ifdef TARGET_STM32
 
