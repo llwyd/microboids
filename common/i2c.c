@@ -54,7 +54,8 @@ void I2C_Init( void )
     /* Enable I2C2 Clock */
     *((uint32_t *)0x4002103C) |= ( 0x1 << 22 );
 
-    /* Rise time / Fall Time  */
+    /* Rise time / Fall Time from CUBEMX tool.  Super fast mode  */
+    I2C->TIMINGR |= 0x300B29;
 
     /* Turn on peripheral */
     I2C->CR1 |= 0x1;
