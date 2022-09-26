@@ -49,14 +49,6 @@ typedef struct
 
 typedef struct
 {
-    uint32_t CTRL:32;
-    uint32_t LOAD:32;
-    uint32_t VAL:32;
-    uint32_t CALIB:32;
-} systick_t;
-
-typedef struct
-{
     uint32_t IPRO0:32;
     uint32_t IPRO1:32;
     uint32_t IPRO2:32;
@@ -66,10 +58,6 @@ typedef struct
     uint32_t IPRO6:32;
     uint32_t IPRO7:32;
 } nvic_ipro_t;
-
-_Static_assert( sizeof( systick_t ) == 16, "Systick struct size incorrect" );
-
-#define SYSTICK_BASE ( 0xE000E010 )
 
 #define NVIC_ISER ( *( ( volatile unsigned int *)0xE000E100 ) )
 #define NVIC_ICER ( *( ( volatile unsigned int *)0xE000E180 ) )
