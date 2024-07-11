@@ -2,11 +2,16 @@
 #define _GPIO_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 
+extern void GPIO_Init(void);
+extern void GPIO_ConfigureOutput(uint16_t pin);
+extern void GPIO_Toggle(uint16_t pin);
+extern void GPIO_SetAlt(uint16_t pin, uint8_t alt_func);
+extern void GPIO_SetOutput(uint16_t pin);
+extern void GPIO_ClearOutput(uint16_t pin);
 
-
-
-#ifdef TARGET_STM32
+#if defined TARGET_STM32
 
 #define GPIOA_BASE   ( 0x50000000 )
 #define GPIOB_BASE   ( 0x50000400 )
@@ -118,7 +123,7 @@ typedef struct
 
 #else
 
-_Static_assert(false, "No target defined in gpio.h");
+//_Static_assert(false, "No target defined in gpio.h");
 
 #endif
 

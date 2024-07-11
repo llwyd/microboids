@@ -1,5 +1,7 @@
 #include "spi.h"
 
+#if defined TARGET_SAMD21
+
 #define GPIO_BASE       ( 0x41004400 )
 #define GCLK_BASE       ( 0x40000C00 )
 #define SERCOM1_BASE    ( 0x42000C00 )
@@ -122,4 +124,6 @@ extern void SPI_WriteMSB( uint8_t * data, uint8_t len )
         } 
     }
 }
+
+#endif
 
