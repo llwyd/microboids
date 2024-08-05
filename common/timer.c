@@ -3,39 +3,6 @@
 
 #ifdef TARGET_STM32
 
-static volatile timer_t * TIM2 = ( timer_t * ) TIM2_BASE;
-
-#define TIM2_SECOND_COUNT ( 0x3D09 )
-
-extern void Timer_Init( void )
-{
-    /* Enable TIM2 */
-    *((uint32_t *)0x4002103C) |= ( 0x1 << 0U );
-    
-    /* Enable NVIC */
-    NVIC_ISER |= ( 1 << 15U );
-
-    /* 64MHz Source clock, prescalar of 4095 for 15kHzish*/
-    TIM2->PSC = 4095;
-
-    /* 1s Pulse */
-    TIM2->ARR = ( TIM2_SECOND_COUNT >> 8 );
-
-    /* Enable Interrupts */
-    TIM2->DIER |= ( 0x1 << 0U );
-}
-
-extern void Timer_Start( void )
-{
-    TIM2->CR1 |= ( 0x1 << 0U );
-}
-
-extern void Timer_ClearInterrupt( void )
-{
-    NVIC_ICPR |= ( 0x1 << 15U );
-    TIM2->SR &= ~( 0x1 << 0U );
-}
-
 /*
 void Timer_UpdatePeriod( void )
 {

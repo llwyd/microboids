@@ -11,7 +11,7 @@ SECTIONS
     .text :
     {
         KEEP(*(.core_vectors))
-        KEEP(*(.stm32_vectors))
+        KEEP(*(.target_vectors))
         *(.text*)
         *(.rodata*)
         . = ALIGN(4);
@@ -36,6 +36,15 @@ SECTIONS
         *(COMMON)
         . = ALIGN(4);
         _ebss = .;
+    } > RAM AT > ROM  
+    
+    . = ALIGN(4);
+    .no_init :
+    {
+        _sno_init = .;
+        *(.no_init*)
+        . = ALIGN(4);
+        _eno_init = .;
     } > RAM AT > ROM  
 
     .stack :

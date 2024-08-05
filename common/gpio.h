@@ -4,21 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-extern void GPIO_Init(void);
-extern void GPIO_ConfigureOutput(uint16_t pin);
-extern void GPIO_Toggle(uint16_t pin);
-extern void GPIO_SetAlt(uint16_t pin, uint8_t alt_func);
-extern void GPIO_SetOutput(uint16_t pin);
-extern void GPIO_ClearOutput(uint16_t pin);
-
 #if defined TARGET_STM32
-
-#define GPIOA_BASE   ( 0x50000000 )
-#define GPIOB_BASE   ( 0x50000400 )
-#define GPIOC_BASE   ( 0x50000800 )
-#define GPIOD_BASE   ( 0x50000C00 )
-#define GPIOE_BASE   ( 0x50001000 )
-#define GPIOF_BASE   ( 0x50001400 )
 
 typedef struct
 {
@@ -35,6 +21,12 @@ typedef struct
     uint32_t BRR:32;
 } gpio_t;
 
+#define GPIOA_BASE   ( 0x50000000 )
+#define GPIOB_BASE   ( 0x50000400 )
+#define GPIOC_BASE   ( 0x50000800 )
+#define GPIOD_BASE   ( 0x50000C00 )
+#define GPIOE_BASE   ( 0x50001000 )
+#define GPIOF_BASE   ( 0x50001400 )
 
 #elif TARGET_SAMD21
 
@@ -126,6 +118,15 @@ typedef struct
 //_Static_assert(false, "No target defined in gpio.h");
 
 #endif
+
+extern void GPIO_Init(void);
+extern void GPIO_ConfigureOutput(volatile gpio_t * const gpio, uint16_t pin);
+extern void GPIO_Toggle(volatile gpio_t * const gpio,uint16_t pin);
+extern void GPIO_SetAlt(volatile gpio_t * const gpio,uint16_t pin, uint8_t alt_func);
+extern void GPIO_SetOutput(volatile gpio_t * const gpio,uint16_t pin);
+extern void GPIO_ClearOutput(volatile gpio_t * const gpio,uint16_t pin);
+extern void GPIO_SetOpenDrain(volatile gpio_t * const gpio, uint16_t pin);
+extern void GPIO_SetSpeed(volatile gpio_t * const gpio, uint16_t pin);
 
 
 #endif /* _GPIO_H_ */

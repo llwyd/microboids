@@ -3,7 +3,7 @@
     .thumb
 
 /* STM32 G0 ISRs */
-.section .stm32_vectors
+.section .target_vectors
     /* Rest of vectors would go here */
     .word 0x0           /* 0 */
     .word 0x0           /* 1 */

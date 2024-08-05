@@ -14,7 +14,7 @@ _Static_assert( sizeof( systick_t ) == 16, "Systick struct size incorrect" );
 
 static volatile systick_t * const SYSTICK = ( systick_t * ) SYSTICK_BASE;
 
-static uint32_t ms_count;
+static volatile uint32_t ms_count;
 
 /* SysTick ISR */
 void  __attribute__((interrupt("IRQ"))) _sysTick( void )
@@ -35,12 +35,19 @@ extern void SysTick_Init( uint32_t load )
     SYSTICK->CTRL |= 0x7;
 }
 
-uint32_t SysTick_GetRaw()
+extern uint32_t SysTick_GetRaw()
 {
     return SYSTICK->VAL; 
 }
 
-uint32_t SysTick_GetMS()
+extern uint32_t SysTick_GetMS()
 {
     return ms_count;
 }
+
+extern void SysTick_Delay(uint32_t delay_ms)
+{
+    const uint32_t start_ms = SysTick_GetMS();
+    while( (SysTick_GetMS() - start_ms) < delay_ms );
+}
+
