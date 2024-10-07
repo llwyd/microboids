@@ -113,9 +113,31 @@ typedef struct
     uint8_t PINCFG31:8;
 } gpio_t;
 
+#elif defined TARGET_STM32F4
+
+#define GPIOA_BASE   ( 0x40020000 )
+#define GPIOB_BASE   ( 0x40020400 )
+#define GPIOC_BASE   ( 0x40020800 )
+#define GPIOD_BASE   ( 0x40020C00 )
+#define GPIOE_BASE   ( 0x40041000 )
+
+typedef struct
+{
+    uint32_t MODER:32;
+    uint32_t OTYPER:32;
+    uint32_t OSPEEDR:32;
+    uint32_t PUPDR:32;
+    uint32_t IDR:32;
+    uint32_t ODR:32;
+    uint32_t BSRR:32;
+    uint32_t LCKR:32;
+    uint32_t AFRL:32;
+    uint32_t AFRH:32;
+} gpio_t;
+
 #else
 
-//_Static_assert(false, "No target defined in gpio.h");
+_Static_assert(false, "No target defined in gpio.h");
 
 #endif
 
