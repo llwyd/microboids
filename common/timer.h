@@ -6,6 +6,7 @@
 extern void Timer_Init( void );
 extern void Timer_Start( void );
 extern void Timer_ClearInterrupt( void );
+extern void Timer_UpdatePeriod( uint8_t shift );
 
 #ifdef TARGET_STM32
 
@@ -64,7 +65,6 @@ timer_t;
 #define TCC1_BASE ( 0x42002400 )
 #define TCC2_BASE ( 0x42002800 )
 
-void Timer_UpdatePeriod( uint8_t shift );
 
 #endif
 
