@@ -51,7 +51,7 @@ extern void Timer_Init( void )
     TIM2->PSC = 4095;
 
     /* 1s Pulse */
-    TIM2->ARR = ( TIM2_SECOND_COUNT >> 4 );
+    TIM2->ARR = ( TIM2_SECOND_COUNT >> 8 );
 
     /* Enable Interrupts */
     TIM2->DIER |= ( 0x1 << 0U );
