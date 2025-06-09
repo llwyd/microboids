@@ -22,19 +22,19 @@ extern void Events_Init(event_fifo_t * fifo)
 
 static void Enqueue( fifo_base_t * const base )
 {
-    assert(base != NULL );
+    ASSERT(base != NULL );
     ENQUEUE_BOILERPLATE( event_fifo_t, base );
 }
 
 static void Dequeue( fifo_base_t * const base )
 {
-    assert(base != NULL );
+    ASSERT(base != NULL );
     DEQUEUE_BOILERPLATE( event_fifo_t, base );
 }
 
 static void Flush( fifo_base_t * const base )
 {
-    assert(base != NULL );
+    ASSERT(base != NULL );
     FLUSH_BOILERPLATE( event_fifo_t, base );
 }
 

@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 #define SET(X, Y, Z) ( (X) |=  ( (Y) << (Z) ) )
 #define CLR(X, Y, Z) ( (X) &= ~( (Y) << (Z) ) )
@@ -11,41 +12,8 @@
 #define WAITSET( X, Y ) while( !( (X) & ( 1U << (Y) ) ) )
 #define WAITCLR( X, Y ) while(  ( (X) & ( 1U << (Y) ) ) )
 
-typedef struct
-{
-    bool pin0:1;
-    bool pin1:1;
-    bool pin2:1;
-    bool pin3:1;
-    bool pin4:1;
-    bool pin5:1;
-    bool pin6:1;
-    bool pin7:1;
-    bool pin8:1;
-    bool pin9:1;
-    bool pin10:1;
-    bool pin11:1;
-    bool pin12:1;
-    bool pin13:1;
-    bool pin14:1;
-    bool pin15:1;
-    bool pin16:1;
-    bool pin17:1;
-    bool pin18:1;
-    bool pin19:1;
-    bool pin20:1;
-    bool pin21:1;
-    bool pin22:1;
-    bool pin23:1;
-    bool pin24:1;
-    bool pin25:1;
-    bool pin26:1;
-    bool pin27:1;
-    bool pin28:1;
-    bool pin29:1;
-    bool pin30:1;
-    bool pin31:1;
-} reg_bit_t;
+#define ENTER_CRITICAL(X) __asm("CPSID IF")
+#define EXIT_CRITICAL(X) __asm("CPSIE IF")
 
 typedef struct
 {
@@ -64,5 +32,21 @@ typedef struct
 #define NVIC_ISPR ( *( ( volatile unsigned int *)0xE000E200 ) )
 #define NVIC_ICPR ( *( ( volatile unsigned int *)0xE000E280 ) )
 #define NVIC_IPRO ( *( ( volatile unsigned int *)0xE000E400 ) )
+
+
+__attribute__((weak))
+extern void * memset(void * dest, int ch, size_t len)
+{
+    uint8_t * d = (uint8_t *)dest;
+
+    while(len > 0U)
+    {
+        *d = (uint8_t)ch;
+        d++;
+        len--;
+    }
+
+    return dest;
+}
 
 #endif /* __UTIL_H_ */
