@@ -36,7 +36,7 @@ DEFINE_STATE(Life);
 #define SIGNALS(SIG) \
     SIG(Timer) \
 
-GENERATE_SIGNALS(SIGNALS);
+GENERATE_EVENTS(SIGNALS);
 
 static volatile gpio_t * gpio_a = ( gpio_t *) GPIOA_BASE;
 static volatile gpio_t * gpio_b = ( gpio_t *) GPIOB_BASE;
@@ -117,7 +117,7 @@ static state_ret_t State_Life( state_t * this, event_t s )
         default:
         {
             GPIO_SetOutput(gpio_b, LED_PIN);
-            ret = HANDLED();
+            ret = NO_PARENT(this);
         }
         break;
     }
@@ -141,7 +141,7 @@ static void Loop( void )
             asm("wfi"); 
         }
         sig = FIFO_Dequeue( &events );
-        STATEMACHINE_FlatDispatch( &life, sig );
+        STATEMACHINE_Dispatch( &life, sig );
     }
 }
 
