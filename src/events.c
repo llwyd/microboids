@@ -23,18 +23,24 @@ extern void Events_Init(event_fifo_t * fifo)
 static void Enqueue( fifo_base_t * const base )
 {
     ASSERT(base != NULL );
+    asm("CPSID IF"); 
     ENQUEUE_BOILERPLATE( event_fifo_t, base );
+    asm("CPSIE IF"); 
 }
 
 static void Dequeue( fifo_base_t * const base )
 {
     ASSERT(base != NULL );
+    asm("CPSID IF"); 
     DEQUEUE_BOILERPLATE( event_fifo_t, base );
+    asm("CPSIE IF"); 
 }
 
 static void Flush( fifo_base_t * const base )
 {
     ASSERT(base != NULL );
+    asm("CPSID IF"); 
     FLUSH_BOILERPLATE( event_fifo_t, base );
+    asm("CPSIE IF"); 
 }
 

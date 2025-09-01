@@ -6,7 +6,7 @@
 extern void Timer_Init( void );
 extern void Timer_Start( void );
 extern void Timer_ClearInterrupt( void );
-extern void Timer_UpdatePeriod( uint8_t shift );
+extern void Timer_UpdatePeriod( uint16_t shift );
 
 #ifdef TARGET_STM32
 

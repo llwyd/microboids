@@ -57,6 +57,11 @@ extern void Timer_Init( void )
     TIM2->DIER |= ( 0x1 << 0U );
 }
 
+extern void Timer_UpdatePeriod(uint16_t shift)
+{
+    TIM2->ARR = ( TIM2_SECOND_COUNT >> shift );
+}
+
 extern void Timer_Start( void )
 {
     TIM2->CR1 |= ( 0x1 << 0U );

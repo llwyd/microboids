@@ -1,29 +1,30 @@
-NAME = boids
+NAME = microboids
 TARGET = TARGET_STM32
 
-SRC =  boids.c qmath.c trig.c events.c fifo_base.c state.c clock.c bird.c timer.c i2c.c display.c systick.c gpio.c random.c
+SRC =  microboids.c life.c qmath.c trig.c events.c fifo_base.c state.c clock.c bird.c timer.c i2c.c display.c systick.c gpio.c random.c
 OBJ = $(SRC:.c=.o)
 
 CC = arm-none-eabi-gcc
 ASM = arm-none-eabi-as
 
-HAL_DIR = ../hal/stm32g0
-SRCDIR = ../common
+HAL_DIR = ../src
+SRCDIR = ../src
 BOILERPLATE_DIR = ../boilerplate/src
 BIRD_DIR = ../conway/bird
+LIFE_DIR = ../conway/life
 BIRD_COMMON_DIR = ../conway/common
 OPT = -O3
 
-CFLAGS = -std=gnu11 -Wall -Wfatal-errors -c $(OPT) -g -I$(BIRD_DIR) -I$(BIRD_COMMON_DIR) -I$(SRCDIR) -I$(HAL_DIR) -I$(BOILERPLATE_DIR) -ffreestanding -nostdlib -nostartfiles -mcpu=cortex-m0plus -mthumb -fdata-sections -ffunction-sections -D $(TARGET) -D TARGET_ARM -D NDEBUG
+CFLAGS = -std=gnu11 -Wall -Wfatal-errors -c $(OPT) -g -I$(LIFE_DIR) -I$(BIRD_DIR) -I$(BIRD_COMMON_DIR) -I$(SRCDIR) -I$(HAL_DIR) -I$(BOILERPLATE_DIR) -ffreestanding -nostdlib -nostartfiles -mcpu=cortex-m0plus -mthumb -fdata-sections -ffunction-sections -D $(TARGET) -D TARGET_ARM -D NDEBUG
 ASMFLAGS = -g -mcpu=cortex-m0plus -mthumb 
 LDFLAGS = -print-memory-usage -nostdlib --gc-sections
 
-COMMON_DIR = ../common
+COMMON_DIR = ../src
 
 STARTUP_STM32 = m0plus_vectors.o target_vectors.o startup.o
 
 $(NAME).bin: $(NAME).elf
-	arm-none-eabi-objcopy -Obinary boids.elf boids.bin
+	arm-none-eabi-objcopy -Obinary microboids.elf microboids.bin
 $(NAME).elf: $(OBJ) $(STARTUP_STM32) $(HAL_DIR)/memory.ld
 	arm-none-eabi-ld -Map $(NAME).map -T$(HAL_DIR)/memory.ld -o $(NAME).elf $(OBJ) $(STARTUP_STM32) $(LDFLAGS)
 
@@ -37,6 +38,8 @@ $(NAME).elf: $(OBJ) $(STARTUP_STM32) $(HAL_DIR)/memory.ld
 	$(CC) $(CFLAGS) -o $@ $<
 %.o : $(BIRD_DIR)/%.c
 	$(CC) $(CFLAGS) -o $@ $<
+%.o : $(LIFE_DIR)/%.c
+	$(CC) $(CFLAGS) -o $@ $<
 %.o : $(BIRD_COMMON_DIR)/%.c
 	$(CC) $(CFLAGS) -o $@ $<
 %.o : $(COMMON_DIR)/%.c
@@ -46,10 +49,10 @@ clean:
 debug:
 	openocd -f /usr/share/openocd/scripts/interface/stlink.cfg -f /usr/share/openocd/scripts/target/stm32g0x.cfg
 flash:
-	openocd -f /usr/share/openocd/scripts/interface/stlink.cfg -f /usr/share/openocd/scripts/target/stm32g0x.cfg -c "program boids.bin exit 0x08000000 verify reset"
+	openocd -f /usr/share/openocd/scripts/interface/stlink.cfg -f /usr/share/openocd/scripts/target/stm32g0x.cfg -c "program microboids.bin exit 0x08000000 verify reset"
 gdb:
-	arm-none-eabi-gdb -ex "target extended-remote localhost:3333" boids.elf
+	arm-none-eabi-gdb -ex "target extended-remote localhost:3333" microboids.elf
 dump:
-	hexdump -C boids.bin
+	hexdump -C microboids.bin
 objdump:
-	arm-none-eabi-objdump -t boids.elf
+	arm-none-eabi-objdump -t microboids.elf

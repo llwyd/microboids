@@ -13,6 +13,20 @@ extern void GPIO_ConfigureOutput(volatile gpio_t * const gpio, uint16_t pin)
     gpio->MODER |= ( 1 << ((pin << 1U)) );
 }
 
+extern void GPIO_ConfigureInput(volatile gpio_t * const gpio, uint16_t pin)
+{
+    gpio->MODER &= ~( 1 << ((pin << 1U) + 1U) );
+    gpio->MODER &= ~( 1 << ((pin << 1U)) );
+    
+    gpio->PUPDR &= ~( 1 << ((pin << 1U) + 1U) );
+    gpio->PUPDR &= ~( 1 << ((pin << 1U)) );
+}
+
+extern bool GPIO_ReadInput(volatile gpio_t * const gpio, uint16_t pin)
+{
+    return (bool)((gpio->IDR >> pin) & 1u);
+}
+
 extern void GPIO_Toggle(volatile gpio_t * const gpio, uint16_t pin)
 {
     gpio->ODR ^= (1 << pin);

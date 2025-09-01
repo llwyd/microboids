@@ -13,12 +13,13 @@
 #include "fifo_base.h"
 #include "timer.h"
 #include "bird.h"
+#include "life.h"
 #include "display.h"
 #include "random.h"
 #include "systick.h"
 #include <stdbool.h>
 
-#define LED_PIN ( 7U )
+#define MODESELECT_PIN ( 7U )
 #define I2C_SCL ( 11U )
 #define I2C_SDA ( 12U )
 
@@ -33,14 +34,22 @@ _Static_assert( sizeof( uint8_t ) == 1U, "uint8_t > 1 byte" );
 
 DEFINE_STATE(Life);
 
-#define SIGNALS(SIG) \
-    SIG(Timer) \
+#define EVENTS(EVNT) \
+    EVNT(Timer) \
 
-GENERATE_EVENTS(SIGNALS);
+GENERATE_EVENTS(EVENTS);
 
 static volatile gpio_t * gpio_a = ( gpio_t *) GPIOA_BASE;
 static volatile gpio_t * gpio_b = ( gpio_t *) GPIOB_BASE;
 static event_fifo_t events;
+
+typedef struct
+{
+    state_t state;
+    void (*tick)(void);
+    uint8_t (*(*get)(void))[LCD_COLUMNS];
+}
+microboids_state_t;
 
 /* This goes into an uninitialised region so that upon the user
  * pressing the reset button, the GOL will start again using
@@ -50,17 +59,14 @@ static random_t random_seed __attribute__((section(".no_init")));
 
 void  __attribute__((interrupt("IRQ"))) _tim2( void )
 {
-    FIFO_Enqueue( &events, EVENT(Timer));
+    if(!FIFO_IsFull((fifo_base_t*)&events))
+    {
+        FIFO_Enqueue( &events, EVENT(Timer));
+    }
     Timer_ClearInterrupt();
 }
 
-static void UpdateLCD( void )
-{
-    const uint8_t (*buffer)[LCD_COLUMNS] = Bird_GetBuffer();
-    Display_Update( buffer );
-}
-
-static void Init ( void )
+static void Init ( microboids_state_t * const state )
 {
     Clock_Set64MHz();
     SysTick_Init( SYSTICK_1MS );
@@ -68,13 +74,9 @@ static void Init ( void )
     /* Globally Enable Interrupts */
     asm("CPSIE IF"); 
 
-    /* microcontroller starts faster than the power on for LCD
-     * so need brief delay on startup */
-    SysTick_Delay(60U);
 
     GPIO_Init();
-    GPIO_ConfigureOutput(gpio_b, LED_PIN);
-    GPIO_SetOutput(gpio_b, LED_PIN);
+    GPIO_ConfigureInput(gpio_b, MODESELECT_PIN);
 
     GPIO_SetAlt(gpio_a, I2C_SCL, 0x6);
     GPIO_SetAlt(gpio_a, I2C_SDA, 0x6);
@@ -85,30 +87,53 @@ static void Init ( void )
     GPIO_SetSpeed(gpio_a, I2C_SCL);
     GPIO_SetSpeed(gpio_a, I2C_SDA);
     
+    /* microcontroller starts faster than the power on for LCD
+     * so need brief delay on startup */
+    SysTick_Delay(60U);
+    
     Events_Init(&events);
     Random_Init(&random_seed);
     I2C_Init();
     Display_Init();
     Timer_Init();
-    Bird_Init( &UpdateLCD, Random_Next(&random_seed) );
+
+    state->state.state = STATE(Life);
+    
+    if(!GPIO_ReadInput(gpio_b, MODESELECT_PIN))
+    {
+        Bird_Init( Random_Next(&random_seed) );
+        state->tick = Bird_Tick;
+        state->get = Bird_GetBuffer;
+    }
+    else
+    {
+        Timer_UpdatePeriod(4U);
+        Life_Init( Random_Next(&random_seed) );
+        state->tick = Life_Tick;
+        state->get = Life_GetBuffer;
+    }
 }
 
 /* Only state of the program */
 static state_ret_t State_Life( state_t * this, event_t s )
 {
     state_ret_t ret;
+    microboids_state_t * state = (microboids_state_t *)this;
 
     switch( s )
     {
         case EVENT(Timer):
         {
-            Bird_Tick();
+            state->tick();
+            const uint8_t (*buffer)[LCD_COLUMNS] = state->get();
+            Display_Update(buffer);
             ret = HANDLED();
             break;
         }
         case EVENT(Enter):
         {
-            GPIO_ClearOutput(gpio_b, LED_PIN);
+            const uint8_t (*buffer)[LCD_COLUMNS] = state->get();
+            Display_Update(buffer);
             Timer_Start();
             ret = HANDLED();
             break;
@@ -116,7 +141,7 @@ static state_ret_t State_Life( state_t * this, event_t s )
         case EVENT(Exit):
         default:
         {
-            GPIO_SetOutput(gpio_b, LED_PIN);
+            ASSERT(false);
             ret = NO_PARENT(this);
         }
         break;
@@ -128,8 +153,9 @@ static state_ret_t State_Life( state_t * this, event_t s )
 /* Main Event Loop */
 static void Loop( void )
 {
-    state_t life;
-    life.state = STATE(Life);
+    microboids_state_t life;    
+    Init(&life);
+
     event_t sig = EVENT(None);
 
     FIFO_Enqueue(&events, EVENT(Enter));
@@ -141,13 +167,12 @@ static void Loop( void )
             asm("wfi"); 
         }
         sig = FIFO_Dequeue( &events );
-        STATEMACHINE_Dispatch( &life, sig );
+        STATEMACHINE_Dispatch( &life.state, sig );
     }
 }
 
 int main ( void )
 {
-    Init();
     Loop();
 
     return 0;

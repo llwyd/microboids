@@ -1,0 +1,6 @@
+[submodule "conway"]
+	path = conway
+	url = git@github.com:llwyd/conway.git
+[submodule "boilerplate"]
+	path = boilerplate
+	url = git@github.com:llwyd/boilerplate.git

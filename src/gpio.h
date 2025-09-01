@@ -143,6 +143,8 @@ _Static_assert(false, "No target defined in gpio.h");
 
 extern void GPIO_Init(void);
 extern void GPIO_ConfigureOutput(volatile gpio_t * const gpio, uint16_t pin);
+extern void GPIO_ConfigureInput(volatile gpio_t * const gpio, uint16_t pin);
+extern bool GPIO_ReadInput(volatile gpio_t * const gpio, uint16_t pin);
 extern void GPIO_Toggle(volatile gpio_t * const gpio,uint16_t pin);
 extern void GPIO_SetAlt(volatile gpio_t * const gpio,uint16_t pin, uint8_t alt_func);
 extern void GPIO_SetOutput(volatile gpio_t * const gpio,uint16_t pin);
