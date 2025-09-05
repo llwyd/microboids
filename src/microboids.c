@@ -1,9 +1,4 @@
-/* Conway's game of life for the Trinket m0+ and a small lcd display
- * T.L. 2022
- * */
-
-/* ATSAMD21E18 */
-
+#include "m0_util.h"
 #include "util.h"
 #include "clock.h"
 #include "i2c.h"
@@ -17,6 +12,7 @@
 #include "display.h"
 #include "random.h"
 #include "systick.h"
+#include "watchdog.h"
 #include <stdbool.h>
 
 #define MODESELECT_PIN ( 7U )
@@ -112,6 +108,7 @@ static void Init ( microboids_state_t * const state )
         state->tick = Life_Tick;
         state->get = Life_GetBuffer;
     }
+    Watchdog_Init();
 }
 
 /* Only state of the program */
@@ -168,6 +165,7 @@ static void Loop( void )
         }
         sig = FIFO_Dequeue( &events );
         STATEMACHINE_Dispatch( &life.state, sig );
+        Watchdog_Kick();
     }
 }
 

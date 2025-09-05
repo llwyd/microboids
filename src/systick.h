@@ -1,6 +1,7 @@
 #ifndef _SYSTICK_H_
 #define _SYSTICK_H_
 
+#include "m0_util.h"
 #include "util.h"
 
 extern void SysTick_Init( uint32_t load );

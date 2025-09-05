@@ -1,6 +1,7 @@
 #ifndef TIMER_H
 #define TIMER_H
 
+#include "m0_util.h"
 #include "util.h"
 
 extern void Timer_Init( void );

@@ -2,6 +2,7 @@
 #define _CLOCK_H_
 
 #include <stdint.h>
+#include "m0_util.h"
 #include "util.h"
 
 #ifdef TARGET_STM32
