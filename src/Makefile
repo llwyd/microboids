@@ -1,7 +1,7 @@
 NAME = microboids
 TARGET = TARGET_STM32
 
-SRC =  microboids.c watchdog.c life.c qmath.c trig.c events.c fifo_base.c state.c clock.c bird.c timer.c i2c.c display.c systick.c gpio.c random.c
+SRC =  microboids.c lut.c watchdog.c life.c qmath.c trig.c events.c fifo_base.c state.c clock.c bird.c timer.c i2c.c display.c systick.c gpio.c random.c
 OBJ = $(SRC:.c=.o)
 
 CC = arm-none-eabi-gcc
