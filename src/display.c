@@ -2,7 +2,7 @@
 #include "i2c.h"
 #include <stdarg.h>
 
-static void SetupDisplay( int num, ... )
+static void SetupDisplay( uint8_t num, ... )
 {
     uint8_t commands[4];
     va_list args;

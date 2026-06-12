@@ -42,10 +42,10 @@ static volatile timer_t * TIM2 = ( timer_t * ) TIM2_BASE;
 extern void Timer_Init( void )
 {
     /* Enable TIM2 */
-    *((uint32_t *)0x4002103C) |= ( 0x1 << 0U );
+    *((uint32_t *)0x4002103C) |= ( 0x1u << 0U );
     
     /* Enable NVIC */
-    NVIC_ISER |= ( 1 << 15U );
+    NVIC_ISER |= ( 1u << 15U );
 
     /* 64MHz Source clock, prescalar of 4095 for 15kHzish*/
     TIM2->PSC = 4095;
@@ -54,7 +54,7 @@ extern void Timer_Init( void )
     TIM2->ARR = ( TIM2_SECOND_COUNT >> 5 );
 
     /* Enable Interrupts */
-    TIM2->DIER |= ( 0x1 << 0U );
+    TIM2->DIER |= ( 0x1u << 0U );
 }
 
 extern void Timer_UpdatePeriod(uint16_t shift)
@@ -64,11 +64,11 @@ extern void Timer_UpdatePeriod(uint16_t shift)
 
 extern void Timer_Start( void )
 {
-    TIM2->CR1 |= ( 0x1 << 0U );
+    TIM2->CR1 |= ( 0x1u << 0U );
 }
 
 extern void Timer_ClearInterrupt( void )
 {
-    NVIC_ICPR |= ( 0x1 << 15U );
-    TIM2->SR &= ~( 0x1 << 0U );
+    NVIC_ICPR |= ( 0x1u << 15U );
+    TIM2->SR &= ~( 0x1u << 0U );
 }

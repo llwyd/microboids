@@ -25,7 +25,7 @@ void I2C_Init( void )
     *((uint32_t *)0x40021034) |= ( 0x1 << 0 );
 
     /* Disable I2C2 */
-    I2C->CR1 &= ~0x1;
+    I2C->CR1 &= ~0x1u;
     
     /* Enable I2C2 Clock */
     *((uint32_t *)0x4002103C) |= ( 0x1 << 22 );
@@ -39,7 +39,9 @@ void I2C_Init( void )
 
 void I2C_Read( uint8_t address, uint8_t * buffer, uint8_t len )
 {
-
+    (void)address;
+    (void)buffer;
+    (void)len;
 }
 
 bool I2C_Write( uint8_t address, uint8_t * buffer, uint8_t len )
@@ -50,13 +52,13 @@ bool I2C_Write( uint8_t address, uint8_t * buffer, uint8_t len )
     I2C->CR2 = 0x00;
     
     /* 1. Set addressing mode */
-    I2C->CR2 |= ( 1 << 25 ); 
+    I2C->CR2 |= ( 1u << 25u ); 
     /* 2. Slave address */
-    I2C->CR2 |= ( address << 1 );
+    I2C->CR2 |= (uint32_t)( address << 1u );
     /* 3. Transfer Direction */
-    I2C->CR2 &= ~( 1 << 10 );
+    I2C->CR2 &= ~( 1u << 10u );
     /* 4. Number of bytes */
-    I2C->CR2 |= ( len << 16 );
+    I2C->CR2 |= (uint32_t)( len << 16u );
 
     /* Send start condition */
     I2C->CR2 |= ( 1 << 13 );
@@ -88,9 +90,9 @@ void I2C_WriteCommandByte( const uint8_t address, const uint8_t byte )
     I2C->CR2 = 0x00;
     
     /* 2. Slave address */
-    I2C->CR2 |= ( address << 1 );
+    I2C->CR2 |= (uint32_t)( address << 1 );
     /* 3. Transfer Direction */
-    I2C->CR2 &= ~( 1 << 10 );
+    I2C->CR2 &= ~( 1u << 10 );
     /* 4. Number of bytes */
     I2C->CR2 |= ( 0x1 << 16 );
     /* set reload */
@@ -108,8 +110,8 @@ void I2C_WriteCommandByte( const uint8_t address, const uint8_t byte )
 void I2C_WriteRow( const uint8_t * const byte, uint8_t len )
 {
     /* 4. Number of bytes */
-    I2C->CR2 &= ~( 0xFF << 16 );
-    I2C->CR2 |=  ( len << 16 );
+    I2C->CR2 &= ~( 0xFFu << 16 );
+    I2C->CR2 |=  (uint32_t)( len << 16 );
     
     /* set reload */
     I2C->CR2 |= ( 0x1 << 24 );
@@ -125,10 +127,10 @@ void I2C_WriteRow( const uint8_t * const byte, uint8_t len )
 void I2C_WriteFinalRow( const uint8_t * const byte, uint8_t len )
 {
     /* 4. Number of bytes */
-    I2C->CR2 |= ( len << 16 );
+    I2C->CR2 |= (uint32_t)( len << 16u );
     /* set reload */
-    I2C->CR2 &= ~( 0x1 << 24 );
-    I2C->CR2 |= ( 1 << 25 ); 
+    I2C->CR2 &= ~( 0x1u << 24u );
+    I2C->CR2 |= ( 1u << 25u ); 
 
     for( uint8_t i = 0; i < len; i++ )
     {
@@ -144,7 +146,8 @@ void I2C_WriteFinalRow( const uint8_t * const byte, uint8_t len )
 }
 
 void I2C_WriteByte( const uint8_t byte )
-{ 
+{
+    (void)byte;
 }
 
 void I2C_Stop( void )

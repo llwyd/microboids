@@ -35,10 +35,10 @@ static volatile rcc_t * RCC = ( rcc_t * ) RCC_BASE;
 void Clock_Set64MHz( void )
 {
     /* Increase wait states */
-    *((uint32_t *)0x40022000) |= ( 0x2 );
+    *((uint32_t *)0x40022000) |= ( 0x2u );
     
     /* R = 2, N = 8, M = 1 */
-    RCC->CR &= ~( 0x1 << 24U );
+    RCC->CR &= ~( 0x1u << 24U );
     WAITCLR( RCC->CR, 25U );    
 
     RCC->PLLCFGR = ( 0x1 << 29 ) | ( 0x1 << 25 ) | ( 0x1 << 17 ) | ( 0x8 << 8 ) /* |  ( 0x1 << 4 )*/ | 0x2;

@@ -15,7 +15,7 @@ LIFE_DIR = ../conway/life
 BIRD_COMMON_DIR = ../conway/common
 OPT = -O3
 
-CFLAGS = -std=gnu11 -Wall -Wfatal-errors -c $(OPT) -g -I$(LIFE_DIR) -I$(BIRD_DIR) -I$(BIRD_COMMON_DIR) -I$(SRCDIR) -I$(HAL_DIR) -I$(BOILERPLATE_DIR) -ffreestanding -nostdlib -nostartfiles -mcpu=cortex-m0plus -mthumb -fdata-sections -ffunction-sections -D $(TARGET) -D TARGET_ARM -D NDEBUG
+CFLAGS = -std=gnu11 -Wall -Wfatal-errors -c $(OPT) -g -I$(LIFE_DIR) -I$(BIRD_DIR) -I$(BIRD_COMMON_DIR) -I$(SRCDIR) -I$(HAL_DIR) -I$(BOILERPLATE_DIR) -ffreestanding -nostdlib -nostartfiles -mcpu=cortex-m0plus -mthumb -fdata-sections -ffunction-sections -Wextra -Werror -Wpedantic -Wpointer-arith -Wconversion -D $(TARGET) -D TARGET_ARM -D NDEBUG
 ASMFLAGS = -g -mcpu=cortex-m0plus -mthumb 
 LDFLAGS = -print-memory-usage -nostdlib --gc-sections
 

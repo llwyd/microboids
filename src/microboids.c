@@ -43,7 +43,7 @@ typedef struct
 {
     state_t state;
     void (*tick)(void);
-    uint8_t (*(*get)(void))[LCD_COLUMNS];
+    const uint8_t (*(*get)(void))[LCD_COLUMNS];
 }
 microboids_state_t;
 
