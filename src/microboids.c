@@ -14,6 +14,8 @@
 #include "systick.h"
 #include "watchdog.h"
 #include <stdbool.h>
+#include "id.h"
+#include "crc.h"
 
 #define MODESELECT_PIN ( 7U )
 #define I2C_SCL ( 11U )
@@ -71,6 +73,7 @@ static void Init ( microboids_state_t * const state )
     asm("CPSIE IF"); 
 
 
+    CRC_Init();
     GPIO_Init();
     GPIO_ConfigureInput(gpio_b, MODESELECT_PIN);
 

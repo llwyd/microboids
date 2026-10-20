@@ -1,7 +1,8 @@
 #ifndef RANDOM_H_
 #define RANDOM_H_
 
-#include <stdint.h>
+#include "m0_util.h"
+#include "util.h"
 
 typedef struct
 {
